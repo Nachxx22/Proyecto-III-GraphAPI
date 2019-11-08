@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Prueba CSV</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <script type="text/javascript">
+    $.ajax({
+        url: 'CSV.csv',
+        dataType: "text",
+        contentType:"charset=utf-8",
+      }).done(Grafica);
+      function Grafica(data) {
+        console.log(data);
+
+      }
+
+    </script>
+  </head>
+  <body>
+    <script type="text/javascript">
+    alert("holi")
+
+    </script>
+
+
+  </body>
+</html>
