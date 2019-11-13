@@ -6,13 +6,13 @@ public class Persona {
 	private UUID id;
 	private String nombre;
 	private String edad;
-
+	
 	public Persona() {
 		this.id = UUID.randomUUID();
 	}
-
+	
 	public Persona(String nombre, String edad) {
-		super();
+		super();		
 		this.nombre = nombre;
 		this.edad = edad;
 	}
@@ -20,15 +20,12 @@ public class Persona {
 	public String getNombre() {
 		return nombre;
 	}
-
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
 	public String getEdad() {
 		return edad;
 	}
-
 	public void setEdad(String edad) {
 		this.edad = edad;
 	}

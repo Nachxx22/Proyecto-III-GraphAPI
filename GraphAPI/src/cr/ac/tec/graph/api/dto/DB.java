@@ -5,5 +5,5 @@ import java.util.Map;
 import java.util.UUID;
 
 public class DB {
-	public static Map<UUID, Persona> db = new HashMap();
+	public static Map<UUID,Persona> db = new HashMap<UUID, Persona>();
 }
