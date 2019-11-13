@@ -1,4 +1,4 @@
-import java.sql.SQLOutput;
+import java.util.UUID;
 
 public class Graph {
     private Lista nodes;
@@ -9,10 +9,30 @@ public class Graph {
         }
         nodes.addLast(node);
     }
-
-    public void print() {
+    public void printGraph() {
         System.out.printf(" \n Graph [nodes= ");
         Lista.printNodeList(nodes);
         System.out.println(" ]");
     }
-}
+
+    public Lista getNodes(){
+        return nodes;
+    }
+
+    public Edge searchEdge(UUID searchEdgeKey){
+        Lista nodes = getNodes();
+        for(int i = 0; i< nodes.size; i++){
+            Lista edges = ((GraphNode)nodes.ver(i)).getEdges();
+            for(int j = 0; j< edges.size; j++) {
+                if (((Edge) edges.ver(j)).getEdgeKey().equals(searchEdgeKey)) {
+                    System.out.println("se encontro");
+                    ((Edge) edges.ver(j)).printEdges();
+                    return (Edge) edges.ver(j);
+                }
+            }
+            } return null;
+        }
+
+    }
+
+

@@ -78,6 +78,21 @@ public class Lista {
         }
     }
 
+    static void printEdgeList(Lista lista) {
+        if (lista.cabeza == null) {
+            System.out.println("No hay archivos");
+        } else {
+            for (int i = 0; i < lista.size; i++) {
+                if (lista.ver(i) != null && lista.ver(i) instanceof Edge) {
+                    System.out.print(((Edge) lista.ver(i)) + " ");
+                } else {
+                    System.out.println("esta vacio");
+                }
+            }
+        }
+    }
+
+
     /***
      * @param index indice en la lista a eliminar
      * Elimina nodos por medio de la posición en la que se encuentra
@@ -119,13 +134,18 @@ public class Lista {
         for (int i = 0; i < indice; i++) {
             temp = temp.siguiente;
         }
-        if(temp.VerDato() != null){
-            return temp.VerDato();
-        }
-        else {
+        if(temp != null) {
+            if (temp.VerDato() != null) {
+                return temp.VerDato();
+            } else {
+                return null;
+            }
+        }else{
             return null;
         }
     }
+
+
 
 
     /**
@@ -137,3 +157,4 @@ public class Lista {
     }
 
     }
+
