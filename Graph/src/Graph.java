@@ -33,6 +33,19 @@ public class Graph {
             } return null;
         }
 
+        public GraphNode searchNode(UUID searchNodeKey){
+            Lista nodes = getNodes();
+            for(int i = 0; i< nodes.size; i++){
+                if (((GraphNode) nodes.ver(i)).getKey().equals(searchNodeKey)) {
+                    System.out.println("se encontro");
+                    System.out.println(((GraphNode) nodes.ver(i)).getName());
+                    return (GraphNode) nodes.ver(i);
+                }
+            } return null;
+        }
+
     }
+
+
 
 
