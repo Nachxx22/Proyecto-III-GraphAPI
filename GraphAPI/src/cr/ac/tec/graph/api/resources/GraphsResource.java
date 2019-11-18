@@ -1,6 +1,6 @@
 package cr.ac.tec.graph.api.resources;
 
-import java.util.UUID; 
+import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -13,39 +13,32 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import cr.ac.tec.graph.api.dto.DB;
-import cr.ac.tec.graph.api.dto.Persona;
+import cr.ac.tec.graph.api.dto.Graph;
 
 @Path("/graphs")
-public class GraphsResource {	
+public class GraphsResource {
 	@GET
 	@Produces("application/json")
-	public Response getGraphs() {
-		return Response.status(200)
-				.entity(DB.db)
-				.build();
+	public Response verGrafos() {
+		return Response.status(200).entity(DB.db).build();
 	}
-	
+
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response createGraph(Persona p) {
-		DB.db.put(p.getId(), p);
-		return Response.status(200)
-				.entity(p)
-				.build();
+	public Response añadirGrafo(Graph p) {
+		DB.db.put(p.getKey(), p);
+		return Response.status(200).entity(p).build();
 	}
+
+//Enlaces y funciones del API para grafos
 	@GET
 	@Path("{id}")
 	@Produces("application/json")
-	public Response getGraphData(@PathParam("id") UUID ID) {
-		Persona p = DB.db.get(ID);
-		if (p != null) {
-			return Response.status(200)
-					.entity(p)
-					.build();
-		}
-		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
+	public GraphResource InfoDeGrafo(@PathParam("id") UUID graphId) {
+		return new GraphResource(graphId);
 	}
+
 	@DELETE
 	@Path("{id}")
 	@Produces("application/json")
@@ -61,12 +54,12 @@ public class GraphsResource {
 	@GET
 	@Path("{id}/nodo")
 	@Produces("application/json")
-	public Response getNodosinf(@PathParam("id") UUID ID,Persona p) {
-		if(DB.db.containsKey(ID)) {
-			return Response.status(200).entity(p.getNombre()).build();
+	public Response getNodosinf(@PathParam("id") UUID ID, Graph p) {
+		if (DB.db.containsKey(ID)) {
+			return Response.status(200).entity(p.getNodes()).build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
-		
+
 	}
 
 	@POST
@@ -74,19 +67,16 @@ public class GraphsResource {
 	@Produces("application/json")
 	public Response NuevoNodo(@PathParam("id") UUID ID) {
 		if (DB.db.containsKey(ID)) {
-			DB.db.remove(ID);
 			return Response.status(200).entity("Nodo añadido").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
 	}
-	
 
 	@DELETE
 	@Path("{id}/nodo")
 	@Produces("application/json")
 	public Response EliminarNodos(@PathParam("id") UUID ID) {
 		if (DB.db.containsKey(ID)) {
-			DB.db.remove(ID);
 			return Response.status(200).entity("Eliminación total de nodos").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
@@ -96,18 +86,22 @@ public class GraphsResource {
 	@GET
 	@Path("{id}/nodo/{id2}")
 	@Produces("application/json")
-	public Response VerNodo(@PathParam("id") UUID ID,@PathParam("id2") UUID nodeId) {
-		if(DB.db.containsKey(ID)) {
-			return Response.status(200).entity("Informacion  de nodo").build();
+	public Response VerNodo(@PathParam("id") UUID ID, @PathParam("id2") UUID nodoid) {
+		if (DB.db.containsKey(ID)) {
+			Graph e = DB.db.get(ID);
+			if (e.searchNode(ID) != null) {
+				return Response.status(200).entity(e.searchNode(ID).getName()).build();
+			}
+			return Response.status(404).entity("El id del nodo es incorrecto o no existe").build();
 		}
-		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
+		return Response.status(404).entity("El id del grafo es incorrecto o no existe").build();
 	}
 
 	@DELETE
 	@Path("{id}/nodo/{id2}")
 	@Produces("application/json")
-	public Response EliminarNodo(@PathParam("id") UUID ID,@PathParam("id2") UUID nodeId) {
-		if(DB.db.containsKey(ID)) {
+	public Response EliminarNodo(@PathParam("id") UUID ID, @PathParam("id2") UUID nodeId) {
+		if (DB.db.containsKey(ID)) {
 			return Response.status(200).entity("Eliminación  de nodo").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
@@ -117,8 +111,8 @@ public class GraphsResource {
 	@Path("{id}/nodo/{id2}")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response ActualizarNodo(@PathParam("id") UUID ID,@PathParam("id2") UUID nodeId) {
-		if(DB.db.containsKey(ID)) {
+	public Response ActualizarNodo(@PathParam("id") UUID ID, @PathParam("id2") UUID nodeId) {
+		if (DB.db.containsKey(ID)) {
 			return Response.status(200).entity("Actualizacion de nodo").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
@@ -128,10 +122,10 @@ public class GraphsResource {
 	@GET
 	@Path("{id}/edges")
 	@Produces("application/json")
-	public Response veredges(@PathParam("id") UUID ID, Persona p) {
+	public Response veredges(@PathParam("id") UUID ID, Graph p) {
 		if (DB.db.containsKey(ID)) {
 			DB.db.remove(ID);
-			return Response.status(200).entity(p.getEdad()).build();
+			return Response.status(200).entity("Todos los edges").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
 	}
@@ -164,7 +158,7 @@ public class GraphsResource {
 	@Path("{id}/edges/{id2}")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response ActualizarEdge(@PathParam("id") UUID ID,@PathParam("id2") UUID edgeId) {
+	public Response ActualizarEdge(@PathParam("id") UUID ID, @PathParam("id2") UUID edgeId) {
 		if (DB.db.containsKey(ID)) {
 			DB.db.remove(ID);
 			return Response.status(200).entity("Actualizar edge").build();
@@ -175,13 +169,13 @@ public class GraphsResource {
 	@DELETE
 	@Path("{id}/edges/{id2}")
 	@Produces("application/json")
-	public Response EliminarEdge(@PathParam("id") UUID ID,@PathParam("id2") UUID edgeId) {
+	public Response EliminarEdge(@PathParam("id") UUID ID, @PathParam("id2") UUID edgeId) {
 		if (DB.db.containsKey(ID)) {
 			DB.db.remove(ID);
 			return Response.status(200).entity("eliminar  edge").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
-		
+
 	}
 
 //Enlaces y funciones para Degree:Array de objetos ordenados por su grado promedio en el orden indicado por el parametro sort
