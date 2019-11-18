@@ -102,7 +102,11 @@ public class GraphsResource {
 	@Produces("application/json")
 	public Response EliminarNodo(@PathParam("id") UUID ID, @PathParam("id2") UUID nodeId) {
 		if (DB.db.containsKey(ID)) {
-			return Response.status(200).entity("Eliminación  de nodo").build();
+			Graph e = DB.db.get(ID);
+			if (e.searchNode(ID) != null) {
+				return Response.status(200).entity(e.searchNode(nodeId))/* .deleteGraphNode(nodeId, e)) */.build();
+			}
+			return Response.status(404).entity("El ID del nodo es incorrecto o no existe").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
 	}
@@ -113,7 +117,11 @@ public class GraphsResource {
 	@Produces("application/json")
 	public Response ActualizarNodo(@PathParam("id") UUID ID, @PathParam("id2") UUID nodeId) {
 		if (DB.db.containsKey(ID)) {
-			return Response.status(200).entity("Actualizacion de nodo").build();
+			Graph e = DB.db.get(ID);
+			if (e.searchNode(nodeId) != null) {
+				return Response.status(200).entity(e.searchNode(nodeId)).build();
+			}
+			return Response.status(404).entity("El ID del nodo es incorrecto o no existe").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
 	}
@@ -124,7 +132,6 @@ public class GraphsResource {
 	@Produces("application/json")
 	public Response veredges(@PathParam("id") UUID ID, Graph p) {
 		if (DB.db.containsKey(ID)) {
-			DB.db.remove(ID);
 			return Response.status(200).entity("Todos los edges").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
@@ -135,7 +142,6 @@ public class GraphsResource {
 	@Produces("application/json")
 	public Response Eliminaredges(@PathParam("id") UUID ID) {
 		if (DB.db.containsKey(ID)) {
-			DB.db.remove(ID);
 			return Response.status(200).entity("Eliminación  de  todos los edges").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
@@ -147,7 +153,6 @@ public class GraphsResource {
 	@Produces("application/json")
 	public Response AgregarEdge(@PathParam("id") UUID ID) {
 		if (DB.db.containsKey(ID)) {
-			DB.db.remove(ID);
 			return Response.status(200).entity("Agregar edge").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
@@ -160,8 +165,11 @@ public class GraphsResource {
 	@Produces("application/json")
 	public Response ActualizarEdge(@PathParam("id") UUID ID, @PathParam("id2") UUID edgeId) {
 		if (DB.db.containsKey(ID)) {
-			DB.db.remove(ID);
-			return Response.status(200).entity("Actualizar edge").build();
+			Graph e = DB.db.get(ID);
+			if (e.searchEdge(edgeId) != null) {
+				return Response.status(200).entity(e.searchEdge(edgeId)).build();
+			}
+			return Response.status(404).entity("El ID del edge es incorrecto o no existe").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
 	}
@@ -171,8 +179,11 @@ public class GraphsResource {
 	@Produces("application/json")
 	public Response EliminarEdge(@PathParam("id") UUID ID, @PathParam("id2") UUID edgeId) {
 		if (DB.db.containsKey(ID)) {
-			DB.db.remove(ID);
-			return Response.status(200).entity("eliminar  edge").build();
+			Graph e = DB.db.get(ID);
+			if (e.searchEdge(edgeId) != null) {
+				return Response.status(200).entity(e.searchEdge(edgeId)).build();
+			}
+			return Response.status(404).entity("El ID del edge es incorrecto o no existe").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
 
@@ -184,7 +195,6 @@ public class GraphsResource {
 	@Produces("application/json")
 	public Response Degree(@PathParam("id") UUID ID) {
 		if (DB.db.containsKey(ID)) {
-			DB.db.remove(ID);
 			return Response.status(200).entity("degree").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
@@ -196,7 +206,6 @@ public class GraphsResource {
 	@Produces("application/json")
 	public Response dijkstra(@PathParam("id") UUID ID) {
 		if (DB.db.containsKey(ID)) {
-			DB.db.remove(ID);
 			return Response.status(200).entity("dijkstra").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
