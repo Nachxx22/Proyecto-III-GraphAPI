@@ -13,7 +13,10 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
 import cr.ac.tec.graph.api.dto.DB;
+import cr.ac.tec.graph.api.dto.Edge;
 import cr.ac.tec.graph.api.dto.Graph;
+import cr.ac.tec.graph.api.dto.GraphNode;
+import cr.ac.tec.graph.api.dto.Representation;
 
 @Path("/graphs")
 public class GraphsResource {
@@ -26,9 +29,14 @@ public class GraphsResource {
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response añadirGrafo(Graph p) {
-		DB.db.put(p.getKey(), p);
-		return Response.status(200).entity(p).build();
+	public Response añadirGrafo(/* Graph p, GraphNode nodes, Edge edges */) {
+		// DB.db.put(p.getKey(), p); //Linea para agregar el graph con el UUID a la db
+		Graph graph = Representation.getNames();// para probar las otras funciones del API mientras se arregla el tipo
+												// JSON
+		DB.db.put(graph.getKey(), graph);// para probar las otras funciones del API mientras se arregla el tipo JSON
+		// return Response.status(200).entity(p).build();//Respuesta para el grafo
+		// funcional desde postman
+		return Response.status(200).entity(graph).build();
 	}
 
 //Enlaces y funciones del API para grafos
@@ -45,7 +53,7 @@ public class GraphsResource {
 	public Response EliminarInfoGrafo(@PathParam("id") UUID ID) {
 		if (DB.db.containsKey(ID)) {
 			DB.db.remove(ID);
-			return Response.status(200).entity("Eliminado").build();
+			return Response.status(200).entity("Grafo eliminado").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
 	}
@@ -54,8 +62,9 @@ public class GraphsResource {
 	@GET
 	@Path("{id}/nodo")
 	@Produces("application/json")
-	public Response getNodosinf(@PathParam("id") UUID ID, Graph p) {
+	public Response getNodosinf(@PathParam("id") UUID ID) {
 		if (DB.db.containsKey(ID)) {
+			Graph p = DB.db.get(ID);
 			return Response.status(200).entity(p.getNodes()).build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
@@ -64,10 +73,13 @@ public class GraphsResource {
 
 	@POST
 	@Path("{id}/nodo")
+	@Consumes("application/json")
 	@Produces("application/json")
-	public Response NuevoNodo(@PathParam("id") UUID ID) {
+	public Response NuevoNodo(@PathParam("id") UUID ID, GraphNode n) {
 		if (DB.db.containsKey(ID)) {
-			return Response.status(200).entity("Nodo añadido").build();
+			Graph p = DB.db.get(ID);
+			p.addNode(n);
+			return Response.status(200).entity(n).build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
 	}
@@ -115,11 +127,13 @@ public class GraphsResource {
 	@Path("{id}/nodo/{id2}")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response ActualizarNodo(@PathParam("id") UUID ID, @PathParam("id2") UUID nodeId) {
+	public Response ActualizarNodo(@PathParam("id") UUID ID, @PathParam("id2") UUID nodeId, String Name) {
 		if (DB.db.containsKey(ID)) {
 			Graph e = DB.db.get(ID);
-			if (e.searchNode(nodeId) != null) {
-				return Response.status(200).entity(e.searchNode(nodeId)).build();
+			GraphNode nod = e.searchNode(nodeId);
+			if (nod != null) {
+				nod.setName(Name);
+				return Response.status(200).entity(nod.getName()).build();
 			}
 			return Response.status(404).entity("El ID del nodo es incorrecto o no existe").build();
 		}
@@ -163,11 +177,13 @@ public class GraphsResource {
 	@Path("{id}/edges/{id2}")
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response ActualizarEdge(@PathParam("id") UUID ID, @PathParam("id2") UUID edgeId) {
+	public Response ActualizarEdge(@PathParam("id") UUID ID, @PathParam("id2") UUID edgeId, double distance) {
 		if (DB.db.containsKey(ID)) {
 			Graph e = DB.db.get(ID);
-			if (e.searchEdge(edgeId) != null) {
-				return Response.status(200).entity(e.searchEdge(edgeId)).build();
+			Edge edg = e.searchEdge(edgeId);
+			if (edg != null) {
+				edg.setDistance(distance);
+				return Response.status(200).entity(edg.getDistance()).build();
 			}
 			return Response.status(404).entity("El ID del edge es incorrecto o no existe").build();
 		}

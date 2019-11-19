@@ -25,18 +25,23 @@ public class Edge {
 		return edgeKey;
 	}
 
-	Object setdistance(double e) {
-		this.distance = e;
+	public double getDistance() {
 		return distance;
 	}
 
-	Object setorigin(GraphNode e) {
-		this.origin = e;
-		return distance;
+	public GraphNode setOrigin(GraphNode gn) {
+		this.origin = gn;
+		return origin;
 	}
 
-	Object setdestination(GraphNode e) {
-		this.destination = e;
+	public GraphNode setDestination(GraphNode gn) {
+		this.destination = gn;
+		return destination;
+	}
+
+	public double setDistance(double d) {
+		this.distance = d;
 		return distance;
+
 	}
 }
