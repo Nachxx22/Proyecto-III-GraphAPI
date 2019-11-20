@@ -9,8 +9,6 @@ public class Representation {
         A.addEdge(new Edge(A, C, 90));
         B.addEdge(new Edge(B, C, 50));
 
-        A.getEdges();
-
         Graph graph = new Graph();
         graph.addNode(A);
         graph.addNode(B);

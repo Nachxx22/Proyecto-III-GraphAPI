@@ -57,7 +57,6 @@ public class GraphNode {
                 delete.deleteGraphNode(graph);
             }
         }
-
         if(deleteCount == 0){
             graph.getNodes().eliminar(nodeKey);
             deleteCount ++;
