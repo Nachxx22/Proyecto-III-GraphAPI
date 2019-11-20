@@ -79,7 +79,7 @@ public class Lista {
     }
 
     static void printEdgeList(Lista lista) {
-        System.out.println("NEW LIST");
+        System.out.println("\n_______________// CHANGED GRAPH //________________");
         if (lista.cabeza == null) {
             System.out.println("No hay archivos");
         } else {

@@ -6,6 +6,7 @@ public class GraphNode {
     private String name;
     private static Lista edges;
     private UUID key = UUID.randomUUID();
+    private int deleteCount;
 
     public GraphNode(String name){
         this.name = name;
@@ -44,18 +45,24 @@ public class GraphNode {
 
     public void deleteGraphNode(Graph graph){
         int nodeKey = graph.getNodes().getIndex(this) ;
-        System.out.println(nodeKey);
         for(int i = 0; i< edges.size; i++) {
             Edge temp = ((Edge) edges.ver(i));
             GraphNode delete = this;
             if (temp.destination.equals(delete)) {
                 edges.eliminar(i);
-                deleteGraphNode(graph);
+                delete.deleteGraphNode(graph);
+            }
+            if (temp.origin.equals(delete)){
+                edges.eliminar(i);
+                delete.deleteGraphNode(graph);
             }
         }
 
-        Lista.printEdgeList(edges);
-        graph.getNodes().eliminar(nodeKey);
+        if(deleteCount == 0){
+            graph.getNodes().eliminar(nodeKey);
+            deleteCount ++;
+        }
+
     }
 
 

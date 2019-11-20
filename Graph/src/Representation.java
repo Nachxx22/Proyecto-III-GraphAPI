@@ -16,7 +16,8 @@ public class Representation {
         graph.addNode(B);
         graph.addNode(C);
 
-        B.deleteGraphNode(graph);
+        A.deleteGraphNode(graph);
+        Lista.printEdgeList(A.getEdges());
         return graph;
     }
 
