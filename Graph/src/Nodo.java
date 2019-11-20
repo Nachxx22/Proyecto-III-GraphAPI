@@ -21,6 +21,8 @@ public class Nodo {
         return this.siguiente;
     }
 
+
+
     /**
      * agrega nodos con el dato
      * @param n nuevo nodo a agregar

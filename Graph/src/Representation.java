@@ -16,7 +16,7 @@ public class Representation {
         graph.addNode(B);
         graph.addNode(C);
 
-        graph.searchNode(A.getKey());
+        B.deleteGraphNode(graph);
         return graph;
     }
 

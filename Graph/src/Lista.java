@@ -79,12 +79,19 @@ public class Lista {
     }
 
     static void printEdgeList(Lista lista) {
+        System.out.println("NEW LIST");
         if (lista.cabeza == null) {
             System.out.println("No hay archivos");
         } else {
             for (int i = 0; i < lista.size; i++) {
                 if (lista.ver(i) != null && lista.ver(i) instanceof Edge) {
-                    System.out.print(((Edge) lista.ver(i)) + " ");
+                    if(((Edge) lista.ver(i)).destination == null){
+                        System.out.println("\n Edge [origin=" + ((Edge) lista.ver(i)).origin.getName() + ", destination= null" + ", distance="
+                                + ((Edge) lista.ver(i)).distance + "]");
+                    }else {
+                        System.out.println("\n Edge [origin=" + ((Edge) lista.ver(i)).origin.getName() + ", destination=" + ((Edge) lista.ver(i)).destination.getName() + ", distance="
+                                + ((Edge) lista.ver(i)).distance + "]");
+                    }
                 } else {
                     System.out.println("esta vacio");
                 }
@@ -156,5 +163,20 @@ public class Lista {
         this.size = size;
     }
 
+    public int getIndex(GraphNode elemento) {
+        Nodo temp = cabeza;
+        int index = 0;
+        for (int i=0; i < size; i++) {
+            if(temp.dato.equals(elemento)){
+                return i;
+            }else{
+                temp = temp.siguiente;
+                index = i;
+            }
+        }return index-1;
     }
+
+    }
+
+
 

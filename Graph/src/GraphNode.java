@@ -42,8 +42,19 @@ public class GraphNode {
 
 
 
-    public void deleteGraphNode(int nodeKey, Graph graph){
-        edges.eliminar(nodeKey);
+    public void deleteGraphNode(Graph graph){
+        int nodeKey = graph.getNodes().getIndex(this) ;
+        System.out.println(nodeKey);
+        for(int i = 0; i< edges.size; i++) {
+            Edge temp = ((Edge) edges.ver(i));
+            GraphNode delete = this;
+            if (temp.destination.equals(delete)) {
+                edges.eliminar(i);
+                deleteGraphNode(graph);
+            }
+        }
+
+        Lista.printEdgeList(edges);
         graph.getNodes().eliminar(nodeKey);
     }
 
