@@ -58,6 +58,10 @@ public class Lista {
         }
     }
 
+    /**
+     * Imprime una lista enlazada especificamente de GraphNodes
+     * @param lista lista por imprimir
+     */
     static void printNodeList(Lista lista) {
         if(lista.cabeza == null){
             System.out.println("No hay archivos");
@@ -71,6 +75,10 @@ public class Lista {
         }
     }
 
+    /**
+     * Imprime una lista que contiene unicamente Edges
+     * @param lista lista por imprimir
+     */
     static void printEdgeList(Lista lista) {
         System.out.println("\n_______________// CHANGED GRAPH //________________");
         if (lista.cabeza == null) {

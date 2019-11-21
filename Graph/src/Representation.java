@@ -1,6 +1,7 @@
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+
 public class Representation {
     public static Graph getNames() {
         GraphNode A = new GraphNode("CLOWI");
@@ -22,6 +23,12 @@ public class Representation {
         return graph;
     }
 
+    /**
+     * Genera todos los nodos y los edges de un grafo a partir de dos listas enviadas desde JSON
+     * @param nodos lista de nodos a crear en el grafo
+     * @param edges lista de edges por agregar en el grafo
+     * @param A grafo donde se van a incorporar todos los elementos
+     */
     public void setUp(JSONArray nodos, JSONArray edges, Graph A){
 
         for (int j = 0; j < nodos.length(); j++){
