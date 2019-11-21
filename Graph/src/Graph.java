@@ -1,7 +1,7 @@
 import java.util.UUID;
 
 public class Graph {
-    private Lista nodes;
+    private static Lista nodes;
 
     public void addNode(GraphNode node) {
         if (nodes == null) {
@@ -44,7 +44,19 @@ public class Graph {
             } return null;
         }
 
+    public GraphNode nodeExist(String name){
+        Lista nodes = getNodes();
+        for(int i = 0; i< nodes.size; i++){
+            if (((GraphNode) nodes.ver(i)).getName().equals(name)) {
+                System.out.println("se encontro");
+                System.out.println(((GraphNode) nodes.ver(i)).getName());
+                return (GraphNode) nodes.ver(i);
+            }
+        } return null;
     }
+
+
+}
 
 
 
