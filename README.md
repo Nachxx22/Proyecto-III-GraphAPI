@@ -1,4 +1,5 @@
-https://www.tec.ac.cr/sites/default/files/media/branding/logo-tec.png
+
+![](https://www.tec.ac.cr/sites/default/files/media/branding/logo-tec.png)
 
 # Proyecto-III-GraphAPI
 
