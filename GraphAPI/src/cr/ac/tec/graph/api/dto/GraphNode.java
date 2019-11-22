@@ -6,11 +6,15 @@ public class GraphNode {
 	private String name;
 	private static Lista edges;
 	private UUID key = UUID.randomUUID();
-
+	 private int deleteCount;
+	 
 	public GraphNode(String name) {
+		super();
 		this.name = name;
+	}
+	public GraphNode() {
+		this.key = UUID.randomUUID();
 		this.edges = edges;
-		this.key = key;
 	}
 
 	public String getName() {
@@ -44,9 +48,25 @@ public class GraphNode {
 		return key;
 	}
 
-	public void deleteGraphNode(int nodeKey, Graph graph) {
-		edges.eliminar(nodeKey);
-		graph.getNodes().eliminar(nodeKey);
-	}
+	  public void deleteGraphNode(Graph graph){
+	        int nodeKey = graph.getNodes().getIndex(this) ;
+	        for(int i = 0; i< edges.size; i++) {
+	            Edge temp = ((Edge) edges.ver(i));
+	            GraphNode delete = this;
+	            if (temp.destination.equals(delete)) {
+	                edges.eliminar(i);
+	                delete.deleteGraphNode(graph);
+	            }
+	            if (temp.origin.equals(delete)){
+	                edges.eliminar(i);
+	                delete.deleteGraphNode(graph);
+	            }
+	        }
+	        if(deleteCount == 0){
+	            graph.getNodes().eliminar(nodeKey);
+	            deleteCount ++;
+	        }
+
+	    }
 
 }

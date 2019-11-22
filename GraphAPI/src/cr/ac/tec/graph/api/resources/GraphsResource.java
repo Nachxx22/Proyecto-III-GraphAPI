@@ -1,6 +1,6 @@
 package cr.ac.tec.graph.api.resources;
 
-import java.util.UUID;
+import java.util.UUID;   
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -12,11 +12,14 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
+import org.json.JSONArray;
 import cr.ac.tec.graph.api.dto.DB;
 import cr.ac.tec.graph.api.dto.Edge;
 import cr.ac.tec.graph.api.dto.Graph;
 import cr.ac.tec.graph.api.dto.GraphNode;
+//import cr.ac.tec.graph.api.dto.Representation;0
 import cr.ac.tec.graph.api.dto.Representation;
+import cr.ac.tec.graph.api.dto.test;
 
 @Path("/graphs")
 public class GraphsResource {
@@ -25,18 +28,24 @@ public class GraphsResource {
 	public Response verGrafos() {
 		return Response.status(200).entity(DB.db).build();
 	}
-
+	
+	
+		
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response añadirGrafo(/* Graph p, GraphNode nodes, Edge edges */) {
+	public Response añadirGrafo(test nodos) {
+    	System.out.println(nodos.toString());
+    	//System.out.println(edges);//Graph p/* , GraphNode nodes, Edge edges */
+			Representation h=new Representation();
+			//Graph GA=h.setUp(nodos, edges);
+		
 		// DB.db.put(p.getKey(), p); //Linea para agregar el graph con el UUID a la db
-		Graph graph = Representation.getNames();// para probar las otras funciones del API mientras se arregla el tipo
-												// JSON
-		DB.db.put(graph.getKey(), graph);// para probar las otras funciones del API mientras se arregla el tipo JSON
-		// return Response.status(200).entity(p).build();//Respuesta para el grafo
+		//Graph graph = Representation.getNames();// para probar las otras funciones del API mientras se arregla el tipo										// JSON
+		//DB.db.put(graph.getKey(), graph);// para probar las otras funciones del API mientras se arregla el tipo JSON
+		//return Response.status(200).entity(p).build();//Respuesta para el grafo
 		// funcional desde postman
-		return Response.status(200).entity(graph).build();
+		return Response.status(200).entity("2").build();
 	}
 
 //Enlaces y funciones del API para grafos
@@ -65,6 +74,7 @@ public class GraphsResource {
 	public Response getNodosinf(@PathParam("id") UUID ID) {
 		if (DB.db.containsKey(ID)) {
 			Graph p = DB.db.get(ID);
+			System.out.println(p.getNodes());
 			return Response.status(200).entity(p.getNodes()).build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
@@ -76,8 +86,9 @@ public class GraphsResource {
 	@Consumes("application/json")
 	@Produces("application/json")
 	public Response NuevoNodo(@PathParam("id") UUID ID, GraphNode n) {
-		if (DB.db.containsKey(ID)) {
+	if ( DB.db.containsKey(ID)) {
 			Graph p = DB.db.get(ID);
+			System.out.println(n.getName());;
 			p.addNode(n);
 			return Response.status(200).entity(n).build();
 		}
