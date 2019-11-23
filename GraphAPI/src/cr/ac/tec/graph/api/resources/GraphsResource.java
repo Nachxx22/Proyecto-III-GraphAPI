@@ -18,7 +18,7 @@ import cr.ac.tec.graph.api.dto.DB;
 import cr.ac.tec.graph.api.dto.Edge;
 import cr.ac.tec.graph.api.dto.Graph;
 import cr.ac.tec.graph.api.dto.GraphNode;
-import cr.ac.tec.graph.api.dto.Persona;
+import cr.ac.tec.graph.api.dto.Representation;
 
 @Path("/graphs")
 public class GraphsResource {
@@ -45,15 +45,16 @@ public class GraphsResource {
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response añadirGrafo(Persona p) {
+	public Response añadirGrafo() {
 		// DB.db.put(p.getKey(), p); //Linea para agregar el graph con el UUID a la db
-		// Graph graphh = Representation.getNames();// para probar las otras funciones
+		Graph graphh = Representation.getNames();// para probar las otras funciones
 		// del API mientras se arregla el tipo // JSON
-		// DB.db.put(graphh.getKey(), graphh);// para probar las otras funciones del API
+		DB.db.put(graphh.getKey(), graphh);// para probar las otras funciones del API
 		// mientras se arregla el tipo JSON
-		return Response.status(200).entity(p).build();// Respuesta para el grafo
+		// return Response.status(200).entity(p).build();// Respuesta para el grafo
 		// funcional desde postman
-		// return Response.status(200).entity(graphh).build();
+		System.out.println(graphh);
+		return Response.status(200).entity(graphh).build();
 	}
 
 //Enlaces y funciones del API para grafos
