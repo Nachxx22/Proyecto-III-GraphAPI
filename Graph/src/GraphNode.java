@@ -84,5 +84,16 @@ public class GraphNode {
 
     }
 
+    /**
+     * asigna un nuevo nombre para un nodo del grafo
+     * @param nombre nuevo nombre por asignar al nodo
+     * @return el nuevo nombre
+     */
+    public String setName(String nombre) {
+        this.name = nombre;
+        return name;
+
+    }
+
 
 }

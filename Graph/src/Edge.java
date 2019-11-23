@@ -38,4 +38,21 @@ public class Edge {
     public UUID getEdgeKey(){
         return edgeKey;
     }
+
+    /**
+     * asigna la distancia de una determinada conexion, en este caso referente a la duracion de una llamada
+     * @param distance distancia que debe tener el edge
+     */
+    public void setDistance(double distance) {
+        // TODO Auto-generated method stub
+        this.distance=distance;
+    }
+
+    /**
+     * devuelve el valor de la distancia de una conexion
+     * @return distancia del edge
+     */
+    public double getDistance(){
+        return distance;
+    }
 }

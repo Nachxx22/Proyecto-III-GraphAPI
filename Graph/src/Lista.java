@@ -21,7 +21,7 @@ public class Lista {
      * Agrega objetos al final de una lista enlazada
      * @param e objeto que se quiere agregar al final de la lista
      */
-    void addLast(Object e) {     //arreglar
+    void addLast(Object e) {
 
         if (this.cabeza != null) {
 

@@ -2,6 +2,7 @@ import java.util.UUID;
 
 public class Graph {
     private static Lista nodes;
+    private UUID key=UUID.randomUUID();
 
     /**
      * Agregar nodos al grafo
@@ -79,7 +80,20 @@ public class Graph {
                 System.out.println(((GraphNode) nodes.ver(i)).getName());
                 return (GraphNode) nodes.ver(i);
             }
-        } return null;
+        }
+        return null;
+    }
+
+    /**
+     * retorna la identificacion del grafo
+     * @return llave del grafo
+     */
+    public UUID getKey() {
+
+        // TODO Auto-generated method stub
+
+        return key;
+
     }
 
 
