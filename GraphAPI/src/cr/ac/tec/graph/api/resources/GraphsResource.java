@@ -1,6 +1,8 @@
 package cr.ac.tec.graph.api.resources;
 
-import java.util.UUID;   
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.UUID;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -12,40 +14,46 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 
-import org.json.JSONArray;
 import cr.ac.tec.graph.api.dto.DB;
 import cr.ac.tec.graph.api.dto.Edge;
 import cr.ac.tec.graph.api.dto.Graph;
 import cr.ac.tec.graph.api.dto.GraphNode;
-//import cr.ac.tec.graph.api.dto.Representation;0
-import cr.ac.tec.graph.api.dto.Representation;
-import cr.ac.tec.graph.api.dto.test;
+import cr.ac.tec.graph.api.dto.Persona;
 
 @Path("/graphs")
 public class GraphsResource {
+	public static Graph graph = new Graph();
+	static GraphNode gn = new GraphNode();
+	static String[] n = null;
+	static int[] e = null;
+
 	@GET
 	@Produces("application/json")
 	public Response verGrafos() {
 		return Response.status(200).entity(DB.db).build();
 	}
-	
-	
-		
+
+	@POST
+
+	public void testJSON() {
+		System.out.println("Entro al void");
+		// Representation h = new Representation();
+		// Graph graph = h.setUp(nodos, edges);
+		// DB.db.put(graph.getKey(), graph);
+	}
+
 	@POST
 	@Consumes("application/json")
 	@Produces("application/json")
-	public Response añadirGrafo(test nodos) {
-    	System.out.println(nodos.toString());
-    	//System.out.println(edges);//Graph p/* , GraphNode nodes, Edge edges */
-			Representation h=new Representation();
-			//Graph GA=h.setUp(nodos, edges);
-		
+	public Response añadirGrafo(Persona p) {
 		// DB.db.put(p.getKey(), p); //Linea para agregar el graph con el UUID a la db
-		//Graph graph = Representation.getNames();// para probar las otras funciones del API mientras se arregla el tipo										// JSON
-		//DB.db.put(graph.getKey(), graph);// para probar las otras funciones del API mientras se arregla el tipo JSON
-		//return Response.status(200).entity(p).build();//Respuesta para el grafo
+		// Graph graphh = Representation.getNames();// para probar las otras funciones
+		// del API mientras se arregla el tipo // JSON
+		// DB.db.put(graphh.getKey(), graphh);// para probar las otras funciones del API
+		// mientras se arregla el tipo JSON
+		return Response.status(200).entity(p).build();// Respuesta para el grafo
 		// funcional desde postman
-		return Response.status(200).entity("2").build();
+		// return Response.status(200).entity(graphh).build();
 	}
 
 //Enlaces y funciones del API para grafos
@@ -86,9 +94,10 @@ public class GraphsResource {
 	@Consumes("application/json")
 	@Produces("application/json")
 	public Response NuevoNodo(@PathParam("id") UUID ID, GraphNode n) {
-	if ( DB.db.containsKey(ID)) {
+		if (DB.db.containsKey(ID)) {
 			Graph p = DB.db.get(ID);
-			System.out.println(n.getName());;
+			System.out.println(n.getName());
+			;
 			p.addNode(n);
 			return Response.status(200).entity(n).build();
 		}
@@ -157,7 +166,8 @@ public class GraphsResource {
 	@Produces("application/json")
 	public Response veredges(@PathParam("id") UUID ID, Graph p) {
 		if (DB.db.containsKey(ID)) {
-			return Response.status(200).entity("Todos los edges").build();
+			Graph graph = DB.db.get(ID);
+			return Response.status(200).entity(gn.getEdges()).build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
 	}
@@ -236,6 +246,85 @@ public class GraphsResource {
 			return Response.status(200).entity("dijkstra").build();
 		}
 		return Response.status(404).entity("El ID del grafo es incorrecto o el grafo no existe").build();
+	}
+
+	@GET
+	@Path("/n")
+	@Produces("application/json")
+	public Response Nodes() {
+		// gn.getEdges();
+
+		System.out.println("lista: " + n);
+		return Response.ok(n).header("Acces-Control-Allow-Origin", "*")
+				.header("Acces-Controll-Allow-Methods", "GET, POST,DELETE,PUUT").allow("OPTIONS").build();
+	}
+
+	/**
+	 * @author sergio Funcion que retorna los datos necesarios para la constroccion
+	 *         de los nodos con sigma
+	 * @return
+	 */
+	@GET
+	@Path("/e")
+	@Produces("application/json")
+	public Response Edges() {
+		System.out.println("edge: " + e);
+		return Response.ok().header("Acces-Control-Allow-Origin", "*")
+				.header("Acces-Controll-Allow-Methods", "GET, POST,DELETE,PUUT").allow("OPTIONS").build();
+	}
+
+	/**
+	 * @author sergio Funcion que conecta la web de carga del csv con al api, recibe
+	 *         el nombre del archivo csv para buscarlo en la carpeta deonde la web
+	 *         de carga, guarda los archivos
+	 * @param nombre: Nombre del archivo csv selecconado por el usuario
+	 * @return String de confirmacion de carga
+	 */
+	@POST
+	@Path("{name}/csv")
+	public Response csv(@PathParam("name") String nombre) {
+		String path = "C:\\wamp64\\www\\tutorial\\archivos\\" + nombre;
+		BufferedReader br = null;
+		BufferedReader Br = null;
+		try {
+			br = new BufferedReader(new FileReader(path));
+			String line = br.readLine();
+			line = br.readLine();
+			while (null != line) {
+				String[] partes = line.split(",");
+				GraphNode n1 = new GraphNode(partes[0]);
+				GraphNode n2 = new GraphNode(partes[1]);
+				Edge ED = new Edge(n1, n2, Integer.parseInt(partes[2]));
+				n1.addEdge(ED);
+				graph.addNode(n1);
+				graph.addNode(n2);
+				line = br.readLine();
+			}
+			DB.db.put(graph.getKey(), graph);
+
+			Br = new BufferedReader(new FileReader(path));
+			String linea = Br.readLine();
+			line = br.readLine();
+			n = new String[graph.getNodes().size];
+			System.out.println("size: " + graph.getNodes().size);
+			int cN = 0;
+			linea = Br.readLine();
+			while (null != linea) {
+				System.out.println("cN: " + cN);
+				String[] partes = linea.split(",");
+				n[cN] = partes[0];
+				System.out.println("partes[0] " + partes[0]);
+				cN++;
+				n[cN] = partes[1];
+				System.out.println("partes[1] " + partes[1]);
+				cN++;
+				linea = Br.readLine();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return Response.status(200).entity("csv").header("Acces-Control-Allow-Origin", "*")
+				.header("Acces-Controll-Allow-Methods", "GET, POST,DELETE,PUUT").allow("OPTIONS").build();
 	}
 
 }

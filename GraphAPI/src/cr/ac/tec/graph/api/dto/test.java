@@ -4,9 +4,8 @@ import org.json.JSONArray;
 
 public class test {
 	public JSONArray nodos;
-	public JSONArray edges;
-	public test(JSONArray nodos,JSONArray edges) {
-		this.nodos=nodos;
-		this.edges=edges;
+
+	public test(JSONArray nodos) {
+		this.nodos = nodos;
 	}
 }
